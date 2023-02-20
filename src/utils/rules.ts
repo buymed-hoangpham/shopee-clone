@@ -24,4 +24,4 @@ export const schema = yup
 
 export const loginSchema = schema.omit(['confirm_password'])
 
-export type FormData = yup.InferType<typeof schema>
+export type Schema = yup.InferType<typeof schema>

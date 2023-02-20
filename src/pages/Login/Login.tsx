@@ -1,25 +1,47 @@
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { loginAccount } from 'src/apis/auth.api'
 import Input from 'src/components/Input'
-import { loginSchema } from 'src/utils/rules'
+import { ResponseApi } from 'src/types/utils.type'
+import { loginSchema, Schema } from 'src/utils/rules'
+import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 
-interface FormData {
-  email: string
-  password: string
-}
+type FormData = Omit<Schema, 'confirm_password'>
 
 export default function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setError
   } = useForm<FormData>({
     resolver: yupResolver(loginSchema)
   })
 
+  const loginMutation = useMutation({
+    mutationFn: (body: FormData) => loginAccount(body)
+  })
+
   const onSubmit = handleSubmit((data) => {
-    console.log('data', data)
+    loginMutation.mutate(data, {
+      onSuccess: () => toast.success('Đăng nhập thành công!'),
+      onError: (error) => {
+        if (isAxiosUnprocessableEntityError<ResponseApi<FormData>>(error)) {
+          const formError = error.response?.data.data
+          if (formError) {
+            Object.keys(formError).forEach((key) => {
+              setError(key as keyof FormData, {
+                message: formError[key as keyof FormData],
+                type: 'Server'
+              })
+            })
+          }
+        }
+      }
+    })
   })
 
   return (
