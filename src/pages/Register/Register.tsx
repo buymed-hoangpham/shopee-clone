@@ -1,10 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { omit } from 'lodash'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { Link, useNavigate } from 'react-router-dom'
 import { registerAccount } from 'src/apis/auth.api'
+import Button from 'src/components/Button'
+import { AppContext } from 'src/components/contexts/app.context'
 import Input from 'src/components/Input'
 import { ResponseApi } from 'src/types/utils.type'
 import { Schema, schema } from 'src/utils/rules'
@@ -13,6 +15,8 @@ import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 type FormData = Schema
 
 export default function Register() {
+  const navigate = useNavigate()
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const {
     register,
     handleSubmit,
@@ -28,7 +32,11 @@ export default function Register() {
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
     registerMutation.mutate(body, {
-      onSuccess: (data) => toast.success('Đăng ký thành công!'),
+      onSuccess: (data) => {
+        setIsAuthenticated(true)
+        setProfile(data.data.data.user)
+        navigate('/')
+      },
       onError: (error) => {
         if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
           const formError = error.response?.data.data
@@ -83,9 +91,14 @@ export default function Register() {
               />
 
               <div className='mt-2'>
-                <button className='w-full py-4 px-2 text-center uppercase bg-orange text-white rounded-sm'>
+                <Button
+                  type='submit'
+                  className='w-full py-4 px-2 text-center uppercase bg-orange text-white rounded-sm flex items-center justify-center'
+                  isLoading={registerMutation.isLoading}
+                  disabled={registerMutation.isLoading}
+                >
                   Đăng ký
-                </button>
+                </Button>
               </div>
 
               <div className='mt-8 flex justify-center items-center text-sm'>

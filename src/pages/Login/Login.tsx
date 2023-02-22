@@ -1,9 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { loginAccount } from 'src/apis/auth.api'
+import Button from 'src/components/Button'
+import { AppContext } from 'src/components/contexts/app.context'
 import Input from 'src/components/Input'
 import { ResponseApi } from 'src/types/utils.type'
 import { loginSchema, Schema } from 'src/utils/rules'
@@ -12,6 +15,8 @@ import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 type FormData = Omit<Schema, 'confirm_password'>
 
 export default function Login() {
+  const navigate = useNavigate()
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const {
     register,
     handleSubmit,
@@ -27,7 +32,11 @@ export default function Login() {
 
   const onSubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess: () => toast.success('Đăng nhập thành công!'),
+      onSuccess: (data) => {
+        setIsAuthenticated(true)
+        setProfile(data.data.data.user)
+        navigate('/')
+      },
       onError: (error) => {
         if (isAxiosUnprocessableEntityError<ResponseApi<FormData>>(error)) {
           const formError = error.response?.data.data
@@ -71,12 +80,14 @@ export default function Login() {
               />
 
               <div className='mt-2'>
-                <button
+                <Button
                   type='submit'
-                  className='w-full py-4 px-2 text-center uppercase bg-orange text-white rounded-sm'
+                  className='w-full py-4 px-2 text-center uppercase bg-orange text-white rounded-sm flex items-center justify-center'
+                  isLoading={loginMutation.isLoading}
+                  disabled={loginMutation.isLoading}
                 >
                   Đăng nhập
-                </button>
+                </Button>
               </div>
 
               <div className='mt-8 flex justify-center items-center text-sm'>
