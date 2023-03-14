@@ -4,7 +4,7 @@ import { omit } from 'lodash'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { registerAccount } from 'src/apis/auth.api'
+import authApi from 'src/apis/auth.api'
 import Button from 'src/components/Button'
 import { AppContext } from 'src/components/contexts/app.context'
 import Input from 'src/components/Input'
@@ -13,6 +13,8 @@ import { Schema, schema } from 'src/utils/rules'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 
 type FormData = Schema
+
+const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 
 export default function Register() {
   const navigate = useNavigate()
@@ -23,10 +25,10 @@ export default function Register() {
     formState: { errors },
     setError
   } = useForm<FormData>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(registerSchema)
   })
   const registerMutation = useMutation({
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
   })
 
   const onSubmit = handleSubmit((data) => {
@@ -56,7 +58,7 @@ export default function Register() {
   return (
     <div className='bg-orange'>
       <div className='container'>
-        <div className='grid grid-cols-1 lg:grid-cols-5 py-12 lg:py-32 lg:pr-10'>
+        <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
             <form onSubmit={onSubmit} className='rounded bg-white p-10 shadow-sm' noValidate>
               <h1 className='text-xl'>Đăng ký</h1>
@@ -93,7 +95,7 @@ export default function Register() {
               <div className='mt-2'>
                 <Button
                   type='submit'
-                  className='w-full py-4 px-2 text-center uppercase bg-orange text-white rounded-sm flex items-center justify-center'
+                  className='flex w-full items-center justify-center rounded-sm bg-orange py-4 px-2 text-center uppercase text-white'
                   isLoading={registerMutation.isLoading}
                   disabled={registerMutation.isLoading}
                 >
@@ -101,9 +103,9 @@ export default function Register() {
                 </Button>
               </div>
 
-              <div className='mt-8 flex justify-center items-center text-sm'>
+              <div className='mt-8 flex items-center justify-center text-sm'>
                 <span className='text-gray-300'>Bạn đã có tài khoản?</span>
-                <Link className='text-orange ml-1' to='/login'>
+                <Link className='ml-1 text-orange' to='/login'>
                   Đăng nhập
                 </Link>
               </div>

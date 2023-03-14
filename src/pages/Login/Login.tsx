@@ -3,16 +3,17 @@ import { useMutation } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { loginAccount } from 'src/apis/auth.api'
+import authApi from 'src/apis/auth.api'
 import Button from 'src/components/Button'
 import { AppContext } from 'src/components/contexts/app.context'
 import Input from 'src/components/Input'
 import { ResponseApi } from 'src/types/utils.type'
-import { loginSchema, Schema } from 'src/utils/rules'
+import { schema, Schema } from 'src/utils/rules'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 
 type FormData = Omit<Schema, 'confirm_password'>
+
+const loginSchema = schema.pick(['email', 'password'])
 
 export default function Login() {
   const navigate = useNavigate()
@@ -27,7 +28,7 @@ export default function Login() {
   })
 
   const loginMutation = useMutation({
-    mutationFn: (body: FormData) => loginAccount(body)
+    mutationFn: (body: FormData) => authApi.login(body)
   })
 
   const onSubmit = handleSubmit((data) => {
@@ -56,7 +57,7 @@ export default function Login() {
   return (
     <div className='bg-orange'>
       <div className='container'>
-        <div className='grid grid-cols-1 lg:grid-cols-5 py-12 lg:py-32 lg:pr-10'>
+        <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
             <form onSubmit={onSubmit} className='rounded bg-white p-10 shadow-sm' noValidate>
               <h1 className='text-xl'>Đăng nhập</h1>
@@ -82,7 +83,7 @@ export default function Login() {
               <div className='mt-2'>
                 <Button
                   type='submit'
-                  className='w-full py-4 px-2 text-center uppercase bg-orange text-white rounded-sm flex items-center justify-center'
+                  className='flex w-full items-center justify-center rounded-sm bg-orange py-4 px-2 text-center uppercase text-white'
                   isLoading={loginMutation.isLoading}
                   disabled={loginMutation.isLoading}
                 >
@@ -90,9 +91,9 @@ export default function Login() {
                 </Button>
               </div>
 
-              <div className='mt-8 flex justify-center items-center text-sm'>
+              <div className='mt-8 flex items-center justify-center text-sm'>
                 <span className='text-gray-300'>Bạn mới biết đến Shopee?</span>
-                <Link className='text-orange ml-1' to='/register'>
+                <Link className='ml-1 text-orange' to='/register'>
                   Đăng ký
                 </Link>
               </div>

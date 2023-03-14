@@ -19,23 +19,27 @@ class Http {
     })
     this.instance.interceptors.request.use(
       (config) => {
-        if (this.accessToken && config.headers) config.headers.authorization = this.accessToken
-
+        if (this.accessToken && config.headers) {
+          config.headers.authorization = this.accessToken
+          return config
+        }
         return config
       },
-      (error) => Promise.reject(error)
+      (error) => {
+        return Promise.reject(error)
+      }
     )
     this.instance.interceptors.response.use(
       (response) => {
         const { url } = response.config
-        if (url === '/login' || url === '/register') {
+        if (url === 'login' || url === 'register') {
           const data = response.data as AuthResponse
           this.accessToken = data.data.access_token
           setAccessTokenToLS(this.accessToken)
           setProfileToLS(data.data.user)
         }
 
-        if (url === '/logout') {
+        if (url === 'logout') {
           this.accessToken = ''
           clearLS()
         }
