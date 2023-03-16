@@ -1,18 +1,20 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import productApi from 'src/apis/product.api'
 import purchaseApi from 'src/apis/purchase.api'
 import QuantityController from 'src/components/QuantityController'
+import path from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchase'
-import { queryClient } from 'src/main'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import Product from '../ProductList/components/Product'
 import ProductRating from '../ProductList/components/ProductRating'
 
 export default function ProductDetail() {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const { nameId } = useParams()
   const id = getIdFromNameId(nameId as string)
   const imageRef = useRef<HTMLImageElement>(null)
@@ -39,8 +41,7 @@ export default function ProductDetail() {
     onSuccess: (data) => {
       toast.success(data.data.message, { autoClose: 1000 })
       queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
-    },
-    onError: () => toast.error('Có lỗi xảy ra! Vui lòng thử lại.', { autoClose: 1000 })
+    }
   })
 
   const addToCart = () => {
@@ -94,6 +95,16 @@ export default function ProductDetail() {
 
   const handleBuyCount = (value: number) => {
     setBuyCount(value)
+  }
+
+  const buyNow = async () => {
+    const res = await addInCartMutation.mutateAsync({ buy_count: buyCount, product_id: product?._id as string })
+    const purchase = res.data.data
+    navigate(path.cart, {
+      state: {
+        purchaseId: purchase._id
+      }
+    })
   }
 
   useEffect(() => {
@@ -231,7 +242,10 @@ export default function ProductDetail() {
                   </svg>
                   Thêm vào giỏ hàng
                 </button>
-                <button className='fkex ml-4 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'>
+                <button
+                  className='fkex ml-4 h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
+                  onClick={buyNow}
+                >
                   Mua ngay
                 </button>
               </div>

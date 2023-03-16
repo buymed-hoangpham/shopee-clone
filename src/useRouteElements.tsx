@@ -1,8 +1,10 @@
 import { useContext } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-import { AppContext } from './components/contexts/app.context'
+import { AppContext } from './contexts/app.context'
+import CartLayout from './layouts/CartLayout'
 import MainLayout from './layouts/MainLayout/MainLayout'
 import RegisterLayout from './layouts/RegisterLayout'
+import Cart from './pages/Cart'
 import Login from './pages/Login'
 import ProductDetail from './pages/ProductDetail'
 import ProductList from './pages/ProductList'
@@ -30,6 +32,14 @@ export default function useRouteElements() {
             <MainLayout>
               <Profile />
             </MainLayout>
+          )
+        },
+        {
+          path: '/cart',
+          element: (
+            <CartLayout>
+              <Cart />
+            </CartLayout>
           )
         }
       ]

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import InputNumber, { InputNumberProps } from '../InputNumber'
 
 interface Props extends InputNumberProps {
@@ -7,47 +8,50 @@ interface Props extends InputNumberProps {
   onType?: (value: number) => void
   onFocusOut?: (value: number) => void
   classNameWrapper?: string
-  value: number
 }
 
 export default function QuantityController({
   max,
-  onDecrease,
-  onFocusOut,
   onIncrease,
+  onDecrease,
   onType,
+  onFocusOut,
   classNameWrapper = 'ml-10',
-  value
+  value,
+  ...rest
 }: Props) {
-  const increase = () => {
-    let _value = Number(value) + 1
-    if (max !== undefined && _value > max) {
-      _value = max
-    }
-
-    onIncrease && onIncrease(_value)
-  }
-
-  const decrease = () => {
-    let _value = Number(value) - 1
-    if (_value < 1) {
-      _value = 1
-    }
-
-    onDecrease && onDecrease(_value)
-  }
-
+  const [localValue, setLocalValue] = useState<number>(Number(value || 0))
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(event.target.value)
     if (max !== undefined && _value > max) {
       _value = max
+    } else if (_value < 1) {
+      _value = 1
     }
+    onType && onType(_value)
+    setLocalValue(_value)
+  }
 
+  const increase = () => {
+    let _value = Number(value || localValue) + 1
+    if (max !== undefined && _value > max) {
+      _value = max
+    }
+    onIncrease && onIncrease(_value)
+    setLocalValue(_value)
+  }
+
+  const decrease = () => {
+    let _value = Number(value || localValue) - 1
     if (_value < 1) {
       _value = 1
     }
+    onDecrease && onDecrease(_value)
+    setLocalValue(_value)
+  }
 
-    onType && onType(_value)
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement, Element>) => {
+    onFocusOut && onFocusOut(Number(event.target.value))
   }
 
   return (
@@ -72,7 +76,9 @@ export default function QuantityController({
         classNameError='hidden'
         classNameInput='h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
         onChange={handleChange}
-        value={value}
+        onBlur={handleBlur}
+        value={value || localValue}
+        {...rest}
       />
       <button
         className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600'
