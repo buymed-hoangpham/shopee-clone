@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import productApi from 'src/apis/product.api'
@@ -11,6 +12,7 @@ import { purchasesStatus } from 'src/constants/purchase'
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import Product from '../ProductList/components/Product'
 import ProductRating from '../ProductList/components/ProductRating'
+import { convert } from 'html-to-text'
 
 export default function ProductDetail() {
   const queryClient = useQueryClient()
@@ -115,6 +117,17 @@ export default function ProductDetail() {
 
   return (
     <div className='bg-gray-200 py-6'>
+      <Helmet>
+        <title>{product.name} | Shopee Clone Việt Nam</title>
+        <meta
+          name='description'
+          content={convert(product.description, {
+            limits: {
+              maxInputLength: 150
+            }
+          })}
+        />
+      </Helmet>
       <div className='container'>
         <div className='bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-9'>

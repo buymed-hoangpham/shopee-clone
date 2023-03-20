@@ -1,14 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { useContext } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import authApi from 'src/apis/auth.api'
 import Button from 'src/components/Button'
-import { AppContext } from 'src/contexts/app.context'
 import Input from 'src/components/Input'
-import { ResponseApi } from 'src/types/utils.type'
+import { AppContext } from 'src/contexts/app.context'
+import { ErrorResponse } from 'src/types/utils.type'
 import { Schema, schema } from 'src/utils/rules'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 
@@ -40,7 +41,7 @@ export default function Register() {
         navigate('/')
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
+        if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
           const formError = error.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) => {
@@ -57,6 +58,13 @@ export default function Register() {
 
   return (
     <div className='bg-orange'>
+      <Helmet>
+        <title>Đăng ký | Shopee Clone</title>
+        <meta
+          name='description'
+          content='Đăng ký tài khoản hôm nay và nhận ngay vô số deal và voucher độc quyền dành cho khách hàng mới trên Shopee Việt Nam!'
+        />
+      </Helmet>
       <div className='container'>
         <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>

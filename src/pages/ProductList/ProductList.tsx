@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { Helmet } from 'react-helmet-async'
 import categoryApi from 'src/apis/category.api'
 import productApi from 'src/apis/product.api'
 import useQueryConfig from 'src/hooks/useQueryConfig'
@@ -28,6 +29,13 @@ export default function ProductList() {
 
   return (
     <div className='bg-gray-200 py-6'>
+      <Helmet>
+        <title>Shopee Clone Việt Nam | Mua và Bán Trên Ứng Dụng Di Động Hoặc Website</title>
+        <meta
+          name='description'
+          content='Mua sắm trực tuyến hàng triệu sản phẩm ở tất cả ngành hàng. Giá tốt & Ưu đãi. Mua và bán online trong 30 giây. Shopee Đảm Bảo | Freeship Xtra | Hoàn Xu Xtra'
+        />
+      </Helmet>
       <div className='container'>
         {productsData && (
           <div className='grid grid-cols-12 gap-6'>
