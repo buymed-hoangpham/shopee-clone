@@ -1,0 +1,21 @@
+{
+  "cart": "Cart",
+  "product": "Product",
+  "quantity": "Quantity",
+  "unit price": "Unit Price",
+  "total price": "Total Price",
+  "total": "Total",
+  "checkout": "Check Out",
+  "action": "Action",
+  "select all": "Select All",
+  "delete": "Delete",
+  "item": "item",
+  "saved": "Saved",
+  "empty cart": "Your shopping cart is empty",
+  "buy now": "Go Shopping Now",
+  "recently added products": "Recently Added Products",
+  "view my shopping cart": "View My Shopping Cart",
+  "no products yet": "No Products Yet",
+  "add product to cart": "add product to cart",
+  "free ship": "Free Ship From 0Đ"
+}

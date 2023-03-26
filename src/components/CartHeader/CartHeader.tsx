@@ -2,8 +2,10 @@ import { Link } from 'react-router-dom'
 import path from 'src/constants/path'
 import useSearchProducts from 'src/hooks/useSearchProducts'
 import NavHeader from '../NavHeader'
+import { useTranslation } from 'react-i18next'
 
 export default function CartHeader() {
+  const { t } = useTranslation('cart')
   const { onSubmitSearch, register } = useSearchProducts()
 
   return (
@@ -32,7 +34,7 @@ export default function CartHeader() {
                 <input
                   type='text'
                   className='w-full flex-grow border-none bg-transparent px-3 py-1 text-black outline-none'
-                  placeholder='Free Ship Đơn Từ 0Đ'
+                  placeholder={t('free ship')}
                   {...register('name')}
                 />
                 <button className='flex-shrink-0 rounded-sm bg-orange py-2 px-8 hover:opacity-90'>

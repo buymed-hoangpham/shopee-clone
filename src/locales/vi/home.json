@@ -1,0 +1,29 @@
+{
+  "aside filter": {
+    "all categories": "Tất cả danh mục",
+    "filter search": "Bộ lọc tìm kiếm",
+    "price range": "Khoảng giá",
+    "from": "TỪ",
+    "to": "ĐẾN",
+    "apply": "Áp dụng",
+    "up": "Trở lên",
+    "delete all": "Xóa tất cả",
+    "rating": "Đánh giá"
+  },
+  "sort by": {
+    "sort by": "Sắp xếp theo",
+    "popular": "Phổ biến",
+    "latest": "Mới nhất",
+    "top sales": "Bán chạy",
+    "price": "Giá",
+    "price low to high": "Giá: Thấp đến Cao",
+    "price high to low": "Giá: Cao đến Thấp"
+  },
+  "header": {
+    "my account": "Tài khoản của tôi",
+    "my purchase": "Đơn mua",
+    "logout": "Đăng Xuất",
+    "sign up": "Đăng ký",
+    "login": "Đăng nhập"
+  }
+}

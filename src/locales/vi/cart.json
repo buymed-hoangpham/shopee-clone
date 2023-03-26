@@ -1,0 +1,21 @@
+{
+  "cart": "Giỏ hàng",
+  "product": "Sản phẩm",
+  "quantity": "Số lượng",
+  "unit price": "Đơn giá",
+  "total price": "Số tiền",
+  "total": "Tổng thanh toán",
+  "checkout": "Mua Hàng",
+  "action": "Thao tác",
+  "select all": "Chọn tất cả",
+  "delete": "Xóa",
+  "item": "sản phẩm",
+  "saved": "Tiết kiệm",
+  "empty cart": "Giỏ hàng của bạn còn trống",
+  "buy now": "Mua ngay",
+  "recently added products": "Sản phẩm mới thêm",
+  "view my shopping cart": "Xem Giỏ Hàng",
+  "no products yet": "Chưa có sản phẩm",
+  "add product to cart": "Thêm hàng vào giỏ",
+  "free ship": "Free Ship Từ 0Đ"
+}

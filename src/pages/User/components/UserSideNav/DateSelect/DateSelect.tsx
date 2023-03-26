@@ -1,5 +1,6 @@
 import range from 'lodash/range'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   onChange?: (value: Date) => void
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export default function DateSelect({ value, onChange, errorMessage }: Props) {
+  const { t } = useTranslation('profile')
   const [date, setDate] = useState({
     date: value?.getDate() || 1,
     month: value?.getMonth() || 0,
@@ -36,7 +38,7 @@ export default function DateSelect({ value, onChange, errorMessage }: Props) {
 
   return (
     <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-      <div className='truncate pt-3 capitalize sm:w-1/5 sm:text-right'>Ngày sinh</div>
+      <div className='truncate pt-3 capitalize sm:w-1/5 sm:text-right'>{t('date of birth')}</div>
       <div className='sm:w-4/5 sm:pl-5'>
         <div className='flex justify-between'>
           <select
@@ -45,7 +47,7 @@ export default function DateSelect({ value, onChange, errorMessage }: Props) {
             value={value?.getDate() || date.date}
             onChange={handleChange}
           >
-            <option disabled>Ngày</option>
+            <option disabled>{t('day')}</option>
             {range(1, 32).map((opt) => (
               <option key={opt} value={opt} className='!hover:text-orange !py-2'>
                 {opt}
@@ -58,7 +60,7 @@ export default function DateSelect({ value, onChange, errorMessage }: Props) {
             value={value?.getMonth() || date.month}
             onChange={handleChange}
           >
-            <option disabled>Tháng</option>
+            <option disabled>{t('month')}</option>
             {range(0, 12).map((opt) => (
               <option key={opt} value={opt} className=''>
                 {opt + 1}
@@ -71,7 +73,7 @@ export default function DateSelect({ value, onChange, errorMessage }: Props) {
             value={value?.getFullYear() || date.year}
             onChange={handleChange}
           >
-            <option disabled>Năm</option>
+            <option disabled>{t('year')}</option>
             {range(1990, new Date().getFullYear() + 1)
               .reverse()
               .map((opt) => (

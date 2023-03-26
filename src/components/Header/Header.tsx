@@ -15,6 +15,7 @@ import { Purchase } from 'src/types/purchase.type'
 import { formatCurrency } from 'src/utils/utils'
 import { useContext } from 'react'
 import { AppContext } from '../../contexts/app.context'
+import { useTranslation } from 'react-i18next'
 
 type FormData = Pick<Schema, 'name'>
 
@@ -22,6 +23,7 @@ const nameSchema = schema.pick(['name'])
 
 const MAX_PURCHASES = 5
 export default function Header() {
+  const { t } = useTranslation('cart')
   const navigate = useNavigate()
   const queryConfig = useQueryConfig()
   const { isAuthenticated } = useContext(AppContext)
@@ -105,7 +107,7 @@ export default function Header() {
                 <div className='relative max-w-[480px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
                   {purchasesInCart && purchasesInCart.length > 0 ? (
                     <div className='p-2'>
-                      <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
+                      <div className='capitalize text-gray-400'>{t('recently added products')}</div>
                       <div className='mt-5'>
                         {purchasesInCart.slice(0, MAX_PURCHASES).map((purchase: Purchase) => (
                           <div className='mt-2 flex py-2 hover:bg-gray-100' key={purchase._id}>
@@ -127,21 +129,21 @@ export default function Header() {
                       </div>
                       <div className='mt-5 flex items-center justify-between'>
                         <div className='text-xs capitalize text-gray-500'>
-                          {purchasesInCart.length > MAX_PURCHASES ? purchasesInCart.length - MAX_PURCHASES : ''} Thêm
-                          hàng vào giỏ
+                          {purchasesInCart.length > MAX_PURCHASES ? purchasesInCart.length - MAX_PURCHASES : ''}{' '}
+                          {t('add product to cart')}
                         </div>
                         <Link
                           to={path.cart}
                           className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'
                         >
-                          Xem giỏ hàng
+                          {t('view my shopping cart')}
                         </Link>
                       </div>
                     </div>
                   ) : (
                     <div className='flex h-[300px] w-[300px] flex-col items-center justify-center p-2'>
                       <img src={noproduct} alt='no purchase' className='h-24 w-24' />
-                      <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
+                      <div className='mt-3 capitalize'>{t('no products yet')}</div>
                     </div>
                   )}
                 </div>

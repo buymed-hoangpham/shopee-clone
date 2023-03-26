@@ -12,12 +12,14 @@ import { AppContext } from 'src/contexts/app.context'
 import { ErrorResponse } from 'src/types/utils.type'
 import { Schema, schema } from 'src/utils/rules'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
+import { useTranslation } from 'react-i18next'
 
 type FormData = Schema
 
 const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 
 export default function Register() {
+  const { t } = useTranslation('auth')
   const navigate = useNavigate()
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const {
@@ -59,7 +61,7 @@ export default function Register() {
   return (
     <div className='bg-orange'>
       <Helmet>
-        <title>Đăng ký | Shopee Clone</title>
+        <title>{t('sign up')} | Shopee Clone</title>
         <meta
           name='description'
           content='Đăng ký tài khoản hôm nay và nhận ngay vô số deal và voucher độc quyền dành cho khách hàng mới trên Shopee Việt Nam!'
@@ -69,12 +71,12 @@ export default function Register() {
         <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
             <form onSubmit={onSubmit} className='rounded bg-white p-10 shadow-sm' noValidate>
-              <h1 className='text-xl'>Đăng ký</h1>
+              <h1 className='text-xl'>{t('sign up')}</h1>
 
               <Input
                 className='mt-8'
                 type='email'
-                placeholder='Email'
+                placeholder={t('email')}
                 register={register}
                 name='email'
                 errorMessage={errors.email?.message}
@@ -83,7 +85,7 @@ export default function Register() {
               <Input
                 className='mt-2'
                 type='password'
-                placeholder='Mật khẩu'
+                placeholder={t('password')}
                 register={register}
                 name='password'
                 errorMessage={errors.password?.message}
@@ -93,7 +95,7 @@ export default function Register() {
               <Input
                 className='mt-2'
                 type='password'
-                placeholder='Xác nhận mật khẩu'
+                placeholder={t('confirm password')}
                 register={register}
                 name='confirm_password'
                 errorMessage={errors.confirm_password?.message}
@@ -107,14 +109,14 @@ export default function Register() {
                   isLoading={registerMutation.isLoading}
                   disabled={registerMutation.isLoading}
                 >
-                  Đăng ký
+                  {t('sign up')}
                 </Button>
               </div>
 
               <div className='mt-8 flex items-center justify-center text-sm'>
-                <span className='text-gray-300'>Bạn đã có tài khoản?</span>
+                <span className='text-gray-300'>{t('have an account?')}</span>
                 <Link className='ml-1 text-orange' to='/login'>
-                  Đăng nhập
+                  {t('login')}
                 </Link>
               </div>
             </form>
