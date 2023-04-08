@@ -1,6 +1,6 @@
 # Shopee Clone
 
-The purpose of this project is to create a clone of the popular e-commerce platform Shopee using modern web development technologies. The website will have similar functionalities to the original Shopee, such as product listings, shopping cart, payment processing, and order tracking. Additionally, the project will incorporate modern UI/UX design principles and responsive layouts for an optimal user experience across various devices. It will be built using a combination of front-end technologies, including React, TypeScript, and back-end technologies for handling database and server-side functionalities.
+The purpose of this project is to create a clone of the popular e-commerce platform Shopee using modern web development technologies: React, react-query, vitejs, tailwindCSS, react i18next. The website will have similar functionalities to the original Shopee, such as product listings, shopping cart and profile account. Additionally, the project will incorporate modern UI/UX design principles and responsive layouts for an optimal user experience across various devices.
 
 ## Functions in the Project:
 
