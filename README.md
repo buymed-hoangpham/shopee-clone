@@ -1,5 +1,7 @@
 # Shopee Clone
 
+![Shopee Clone]('https://shopee-clone-eosin.vercel.app/)
+
 The purpose of this project is to create a clone of the popular e-commerce platform Shopee using modern web development technologies: React, react-query, vitejs, tailwindCSS, react i18next. The website will have similar functionalities to the original Shopee, such as product listings, shopping cart and profile account. Additionally, the project will incorporate modern UI/UX design principles and responsive layouts for an optimal user experience across various devices.
 
 ## Functions in the Project:
